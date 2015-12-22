@@ -19,11 +19,11 @@ read heroku_region && \
 
 heroku create --region $heroku_region --buildpack https://github.com/heroku/heroku-buildpack-python $heroku_name && \
 
-echo 'Daily DB backup time (UTC)?' && \
+echo 'Daily DB backup hour (UTC)?' && \
 read heroku_db_backup_time && \
 
 heroku addons:create heroku-postgresql:hobby-dev && \
-heroku pg:backups schedule --at "$heroku_db_backup_time UTC\\UTC" DATABASE_URL && \
+heroku pg:backups schedule --at "$heroku_db_backup_time:00 UTC" DATABASE_URL && \
 heroku pg:promote DATABASE_URL && \
 
 heroku addons:create heroku-redis:hobby-dev && \
@@ -47,10 +47,10 @@ heroku config:set DJANGO_MAILGUN_SERVER_NAME=django_mailgun_api_key && \
 heroku config:set DJANGO_MAILGUN_API_KEY=django_mailgun_api_key && \
 
 heroku config:set PYTHONHASHSEED=random && \
-heroku config:set DJANGO_ADMIN_URL=\^somelocation/ && \
+#heroku config:set DJANGO_ADMIN_URL=\^admin/ && \
 
-git push heroku master && \
-heroku run python manage.py migrate && \
-heroku run python manage.py check --deploy && \
-heroku run python manage.py createsuperuser && \
-heroku open
+#git push -u heroku master && \
+#heroku run python manage.py migrate && \
+#heroku run python manage.py check --deploy && \
+#heroku run python manage.py createsuperuser && \
+#heroku open
